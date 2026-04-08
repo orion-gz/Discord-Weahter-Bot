@@ -76,7 +76,7 @@ const KO_TO_EN: Record<string, string> = {
   서울: 'Seoul', 부산: 'Busan', 인천: 'Incheon', 대구: 'Daegu',
   대전: 'Daejeon', 광주: 'Gwangju', 울산: 'Ulsan', 세종: 'Sejong',
   // 경기
-  수원: 'Suwon', 성남: 'Seongnam', 고양: 'Goyang', 용인: 'Yongin',
+  수원: 'Suwon', 성남: 'Seongnam-si', 고양: 'Goyang', 용인: 'Yongin',
   화성: 'Hwaseong', 안산: 'Ansan', 안양: 'Anyang', 남양주: 'Namyangju',
   평택: 'Pyeongtaek', 시흥: 'Siheung', 파주: 'Paju', 의정부: 'Uijeongbu',
   김포: 'Gimpo', 광명: 'Gwangmyeong', 군포: 'Gunpo', 하남: 'Hanam',
