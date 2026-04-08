@@ -71,24 +71,47 @@ function normalizeCity(input: string): string {
   return city;
 }
 
-function isKorean(text: string): boolean {
-  return /[\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]/.test(text);
+const KO_TO_EN: Record<string, string> = {
+  // 특별시·광역시
+  서울: 'Seoul', 부산: 'Busan', 인천: 'Incheon', 대구: 'Daegu',
+  대전: 'Daejeon', 광주: 'Gwangju', 울산: 'Ulsan', 세종: 'Sejong',
+  // 경기
+  수원: 'Suwon', 성남: 'Seongnam', 고양: 'Goyang', 용인: 'Yongin',
+  화성: 'Hwaseong', 안산: 'Ansan', 안양: 'Anyang', 남양주: 'Namyangju',
+  평택: 'Pyeongtaek', 시흥: 'Siheung', 파주: 'Paju', 의정부: 'Uijeongbu',
+  김포: 'Gimpo', 광명: 'Gwangmyeong', 군포: 'Gunpo', 하남: 'Hanam',
+  오산: 'Osan', 이천: 'Icheon', 양주: 'Yangju', 구리: 'Guri',
+  // 강원
+  춘천: 'Chuncheon', 원주: 'Wonju', 강릉: 'Gangneung', 동해: 'Donghae',
+  속초: 'Sokcho', 태백: 'Taebaek', 삼척: 'Samcheok',
+  // 충청
+  천안: 'Cheonan', 청주: 'Cheongju', 공주: 'Gongju', 아산: 'Asan',
+  서산: 'Seosan', 논산: 'Nonsan', 당진: 'Dangjin', 보령: 'Boryeong',
+  // 전라
+  전주: 'Jeonju', 군산: 'Gunsan', 익산: 'Iksan', 정읍: 'Jeongeup',
+  남원: 'Namwon', 목포: 'Mokpo', 여수: 'Yeosu', 순천: 'Suncheon',
+  광양: 'Gwangyang', 나주: 'Naju',
+  // 경상
+  포항: 'Pohang', 경주: 'Gyeongju', 김천: 'Gimcheon', 안동: 'Andong',
+  구미: 'Gumi', 영주: 'Yeongju', 영천: 'Yeongcheon', 상주: 'Sangju',
+  경산: 'Gyeongsan', 창원: 'Changwon', 진주: 'Jinju', 통영: 'Tongyeong',
+  사천: 'Sacheon', 김해: 'Gimhae', 밀양: 'Miryang', 거제: 'Geoje',
+  양산: 'Yangsan',
+  // 제주
+  제주: 'Jeju', 서귀포: 'Seogwipo',
+};
+
+function translateCity(input: string): string {
+  return KO_TO_EN[input] ?? input;
 }
 
 async function geocode(city: string): Promise<{ name: string; country: string; latitude: number; longitude: number }> {
   const normalized = normalizeCity(city);
+  const translated = translateCity(normalized);
 
-  const params: Record<string, string | number> = {
-    name: normalized,
-    count: 1,
-    language: 'ko',
-    format: 'json',
-  };
-  if (isKorean(normalized)) {
-    params.countrycode = 'KR';
-  }
-
-  const response = await axios.get('https://geocoding-api.open-meteo.com/v1/search', { params });
+  const response = await axios.get('https://geocoding-api.open-meteo.com/v1/search', {
+    params: { name: translated, count: 1, language: 'ko', format: 'json' },
+  });
 
   const results = response.data.results;
   if (!results || results.length === 0) {
