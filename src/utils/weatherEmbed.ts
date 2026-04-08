@@ -54,10 +54,12 @@ export function buildWeatherEmbed(weather: WeatherData, isScheduled = false): Em
         value: `**${weather.windSpeed} m/s**`,
         inline: true,
       },
+      { name: '\u200b', value: '\u200b' },
       {
         name: '⏰ 시간별 예보',
         value: hourlyLine || '데이터 없음',
       },
+      { name: '\u200b', value: '\u200b' },
       {
         name: '📅 5일 예보',
         value: dailyLines || '데이터 없음',
