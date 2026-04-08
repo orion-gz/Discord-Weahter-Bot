@@ -71,12 +71,24 @@ function normalizeCity(input: string): string {
   return city;
 }
 
+function isKorean(text: string): boolean {
+  return /[\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]/.test(text);
+}
+
 async function geocode(city: string): Promise<{ name: string; country: string; latitude: number; longitude: number }> {
   const normalized = normalizeCity(city);
 
-  const response = await axios.get('https://geocoding-api.open-meteo.com/v1/search', {
-    params: { name: normalized, count: 1, language: 'ko', format: 'json' },
-  });
+  const params: Record<string, string | number> = {
+    name: normalized,
+    count: 1,
+    language: 'ko',
+    format: 'json',
+  };
+  if (isKorean(normalized)) {
+    params.countrycode = 'KR';
+  }
+
+  const response = await axios.get('https://geocoding-api.open-meteo.com/v1/search', { params });
 
   const results = response.data.results;
   if (!results || results.length === 0) {

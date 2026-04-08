@@ -37,9 +37,8 @@ export function buildWeatherEmbed(weather: WeatherData, isScheduled = false): Em
     .setColor(getEmbedColor(weather.weatherCode))
     .setAuthor({ name: `📍 ${weather.city}, ${weather.country}` })
     .setTitle(`${emoji}  ${description}`)
-    .setDescription(`> 현재 **${weather.temperature}°C** · 체감 **${weather.feelsLike}°C**`)
+    .setDescription(`> 현재 **${weather.temperature}°C** · 체감 **${weather.feelsLike}°C** \n\u200b`)
     .addFields(
-      { name: '\u200b', value: '\u200b' },
       {
         name: '🌡️ 오늘 기온',
         value: `최고 **${today.tempMax}°C** / 최저 **${today.tempMin}°C**`,
@@ -52,15 +51,13 @@ export function buildWeatherEmbed(weather: WeatherData, isScheduled = false): Em
       },
       {
         name: '💨 풍속',
-        value: `**${weather.windSpeed} m/s**`,
+        value: `**${weather.windSpeed} m/s** \n\u200b`,
         inline: true,
       },
-      { name: '\u200b', value: '\u200b' },
       {
         name: '⏰ 시간별 예보',
-        value: hourlyLine || '데이터 없음',
+        value: (hourlyLine || '데이터 없음') + '\n\u200b',
       },
-      { name: '\u200b', value: '\u200b' },
       {
         name: '📅 5일 예보',
         value: dailyLines || '데이터 없음',
