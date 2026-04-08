@@ -17,7 +17,7 @@ const client = new Client({
 const commands = new Collection<string, Command>();
 commands.set(weatherCommand.data.name, weatherCommand);
 
-client.once('ready', (readyClient) => {
+client.once('clientReady', (readyClient) => {
   console.log(`✅ 봇이 ${readyClient.user.tag}으로 로그인되었습니다!`);
   startWeatherScheduler(readyClient);
 });
