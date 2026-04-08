@@ -59,9 +59,23 @@ export function getWmoInfo(code: number): { emoji: string; description: string }
   return WMO_CODES[code] ?? { emoji: '🌡️', description: '알 수 없음' };
 }
 
+// 행정 단위 접미사 제거: "성남시" → "성남", "서울특별시" → "서울"
+function normalizeCity(input: string): string {
+  const suffixes = ['특별자치시', '특별자치도', '특별시', '광역시', '시', '군', '구', '도'];
+  const city = input.trim();
+  for (const suffix of suffixes) {
+    if (city.endsWith(suffix) && city.length > suffix.length + 1) {
+      return city.slice(0, -suffix.length).trim();
+    }
+  }
+  return city;
+}
+
 async function geocode(city: string): Promise<{ name: string; country: string; latitude: number; longitude: number }> {
+  const normalized = normalizeCity(city);
+
   const response = await axios.get('https://geocoding-api.open-meteo.com/v1/search', {
-    params: { name: city, count: 1, language: 'ko', format: 'json' },
+    params: { name: normalized, count: 1, language: 'ko', format: 'json' },
   });
 
   const results = response.data.results;

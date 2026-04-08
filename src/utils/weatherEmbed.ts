@@ -39,6 +39,7 @@ export function buildWeatherEmbed(weather: WeatherData, isScheduled = false): Em
     .setTitle(`${emoji}  ${description}`)
     .setDescription(`> 현재 **${weather.temperature}°C** · 체감 **${weather.feelsLike}°C**`)
     .addFields(
+      { name: '\u200b', value: '\u200b' },
       {
         name: '🌡️ 오늘 기온',
         value: `최고 **${today.tempMax}°C** / 최저 **${today.tempMin}°C**`,

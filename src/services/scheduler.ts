@@ -5,7 +5,7 @@ import { buildWeatherEmbed } from '../utils/weatherEmbed';
 
 export function startWeatherScheduler(client: Client): void {
   const channelId = process.env.DISCORD_CHANNEL_ID;
-  const city = process.env.WEATHER_CITY || 'Seoul';
+  const city = process.env.WEATHER_CITY || 'Seongnam-si';
   const schedule = process.env.WEATHER_SCHEDULE || '0 7 * * *';
   const timezone = process.env.TZ || 'Asia/Seoul';
 
