@@ -1,6 +1,7 @@
 import cron from 'node-cron';
-import { Client, EmbedBuilder, TextChannel } from 'discord.js';
-import { getCurrentWeather } from './weather';
+import { Client, TextChannel } from 'discord.js';
+import { getWeather } from './weather';
+import { buildWeatherEmbed } from '../utils/weatherEmbed';
 
 export function startWeatherScheduler(client: Client): void {
   const channelId = process.env.DISCORD_CHANNEL_ID;
@@ -26,30 +27,14 @@ export function startWeatherScheduler(client: Client): void {
         return;
       }
 
-      const weather = await getCurrentWeather(city);
-
-      const embed = new EmbedBuilder()
-        .setColor(0x3498db)
-        .setTitle(`${weather.emoji} ${weather.city}, ${weather.country} 날씨`)
-        .setDescription(`**${weather.description}**`)
-        .addFields(
-          { name: '🌡️ 기온', value: `${weather.temperature}°C`, inline: true },
-          { name: '🤔 체감 온도', value: `${weather.feelsLike}°C`, inline: true },
-          { name: '💧 습도', value: `${weather.humidity}%`, inline: true },
-          { name: '💨 풍속', value: `${weather.windSpeed} m/s`, inline: true }
-        )
-        .setThumbnail(`https://openweathermap.org/img/wn/${weather.icon}@2x.png`)
-        .setFooter({ text: '자동 날씨 알림 | OpenWeatherMap 제공' })
-        .setTimestamp();
-
+      const weather = await getWeather(city);
+      const embed = buildWeatherEmbed(weather, true);
       await channel.send({ embeds: [embed] });
       console.log(`✅ [${new Date().toLocaleString('ko-KR')}] ${city} 날씨 알림 전송 완료`);
     } catch (error) {
       console.error('날씨 알림 전송 오류:', error);
     }
-  }, {
-    timezone,
-  });
+  }, { timezone });
 
   console.log(`⏰ 날씨 스케줄러 시작: "${schedule}" (도시: ${city}, 시간대: ${timezone})`);
 }
