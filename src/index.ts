@@ -1,4 +1,4 @@
-import { Client, Collection, GatewayIntentBits, Interaction } from 'discord.js';
+import { Client, Collection, GatewayIntentBits, Interaction, MessageFlags } from 'discord.js';
 import * as dotenv from 'dotenv';
 import * as weatherCommand from './commands/weather';
 import { startWeatherScheduler } from './services/scheduler';
@@ -34,9 +34,9 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     console.error('커맨드 실행 오류:', error);
     const errorMessage = '명령어 실행 중 오류가 발생했습니다.';
     if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: errorMessage, ephemeral: true });
+      await interaction.followUp({ content: errorMessage, flags: MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content: errorMessage, ephemeral: true });
+      await interaction.reply({ content: errorMessage, flags: MessageFlags.Ephemeral });
     }
   }
 });

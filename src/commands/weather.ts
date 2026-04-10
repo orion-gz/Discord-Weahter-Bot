@@ -8,12 +8,12 @@ export const data = new SlashCommandBuilder()
   .addStringOption((option) =>
     option
       .setName('도시')
-      .setDescription('날씨를 확인할 도시 이름 (예: 서울, London, Tokyo)')
-      .setRequired(true)
+      .setDescription('날씨를 확인할 도시 이름 (기본값: 성남 / 예: 서울, London)')
+      .setRequired(false)
   );
 
 export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
-  const city = interaction.options.getString('도시', true);
+  const city = interaction.options.getString('도시') ?? '성남';
 
   await interaction.deferReply();
 

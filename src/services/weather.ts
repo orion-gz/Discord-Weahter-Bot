@@ -146,8 +146,9 @@ export async function getWeather(city: string): Promise<WeatherData> {
 
   // Find current hour index using the API's local time string
   const currentTimeStr: string = current.time; // e.g. "2026-04-08T14:00"
+  const currentHourPrefix = currentTimeStr.slice(0, 13); // "2026-04-08T14"
   const hourlyTimes: string[] = data.hourly.time;
-  let startIdx = hourlyTimes.findIndex((t) => t === currentTimeStr);
+  let startIdx = hourlyTimes.findIndex((t) => t.startsWith(currentHourPrefix));
   if (startIdx === -1) startIdx = 0;
 
   const hourly: HourlyForecast[] = [];
