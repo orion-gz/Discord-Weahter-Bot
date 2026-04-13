@@ -1,10 +1,11 @@
 import { REST, Routes } from 'discord.js';
 import * as dotenv from 'dotenv';
 import * as weatherCommand from './commands/weather';
+import * as setCityCommand from './commands/setCity';
 
 dotenv.config();
 
-const commands = [weatherCommand.data.toJSON()];
+const commands = [weatherCommand.data.toJSON(), setCityCommand.data.toJSON()];
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;

@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { getWeather } from '../services/weather';
 import { buildWeatherEmbed } from '../utils/weatherEmbed';
+import { getDefaultCity } from '../services/cityStore';
 
 export const data = new SlashCommandBuilder()
   .setName('날씨')
@@ -13,7 +14,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
-  const city = interaction.options.getString('도시') ?? '성남';
+  const city = interaction.options.getString('도시') ?? getDefaultCity(interaction.user.id) ?? '성남';
 
   await interaction.deferReply();
 

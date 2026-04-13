@@ -1,6 +1,7 @@
 import { Client, Collection, GatewayIntentBits, Interaction, MessageFlags } from 'discord.js';
 import * as dotenv from 'dotenv';
 import * as weatherCommand from './commands/weather';
+import * as setCityCommand from './commands/setCity';
 import { startWeatherScheduler } from './services/scheduler';
 
 dotenv.config();
@@ -16,6 +17,7 @@ const client = new Client({
 
 const commands = new Collection<string, Command>();
 commands.set(weatherCommand.data.name, weatherCommand);
+commands.set(setCityCommand.data.name, setCityCommand);
 
 client.once('clientReady', (readyClient) => {
   console.log(`✅ 봇이 ${readyClient.user.tag}으로 로그인되었습니다!`);
